@@ -1,20 +1,21 @@
 # Drug Side Effect Prediction Using Machine Learning  
 
 ## 📌 Overview  
-This project focuses on predicting the **side effects of drugs** using either their **name** or **SMILES (Simplified Molecular Input Line Entry System)** structure.  
-If a drug already exists in the dataset, users can provide its **name** to retrieve the known side effects.  
-For **new or unknown drugs**, users can input the **SMILES string**, and the trained **Multi-Layer Perceptron (MLP)** model will predict the most probable side effects based on molecular structure.  
+This project predicts the **side effects of drugs** using either their **name** or **SMILES (Simplified Molecular Input Line Entry System)** structure.  
+If a drug already exists in the dataset, users can simply provide its **name** to retrieve known side effects.  
+For **new or unknown drugs**, users can input the **SMILES string**, and the trained **Multi-Layer Perceptron (MLP)** model predicts the most probable side effects based on molecular structure.  
 
-Users can also choose **how many side effects** they want to view, and results are displayed in **decreasing order of probability**.  
+The system includes a **simple frontend interface** where users can enter the drug details, select how many side effects they wish to view, and instantly see the **predictions displayed clearly on screen** with **probability bars** and **severity indicators** (e.g., *Medium*, *High*).  
 
 ---
 
 ## 🚀 Features  
-- Predict side effects from either **drug name** or **SMILES structure**  
-- Uses **MLP-based deep learning model** trained on verified biomedical datasets  
-- Displays side effects ranked by **probability of occurrence**  
-- Simple and interactive **app interface**  
-- Handles both **known** and **novel** drug inputs  
+- Predict side effects from **drug name** or **SMILES structure**  
+- Interactive **frontend interface** for easy user input and output visualization  
+- Displays predictions ranked by **probability**  
+- Shows **probability values**, **thresholds**, and **severity labels**  
+- MLP-based deep learning model trained on reliable biomedical datasets  
+- Supports both **known** and **novel** drugs  
 
 ---
 
@@ -26,6 +27,8 @@ Users can also choose **how many side effects** they want to view, and results a
 ├── data/                      # Preprocessed datasets (STITCH, SIDER, DrugBank)
 ├── notebooks/                 # Model training and analysis notebooks
 ├── utils/                     # Helper scripts (data cleaning, feature extraction)
+├── templates/                 # HTML templates for frontend interface
+├── static/                    # CSS/JS files for UI styling
 ├── requirements.txt           # Python dependencies
 └── README.md                  # Project documentation
 ```
@@ -83,41 +86,39 @@ Then open the application in your browser:
   - **SIDER** — Documented side effects of approved drugs  
   - **DrugBank** — Drug and chemical compound database  
 
-The MLP model was trained on molecular feature vectors derived from SMILES strings using **RDKit** and statistical feature engineering methods.
+The MLP model was trained on molecular feature vectors derived from SMILES strings using **RDKit** and statistical feature extraction techniques.
 
 ---
 
 ## 🖥️ Usage Flow  
-1. Enter the **drug name** or **SMILES structure**.  
-2. Select how many side effects you want to view (e.g., Top 5 / Top 10).  
-3. Click **Predict**.  
-4. The system will display:  
-   - List of predicted side effects  
-   - Corresponding probabilities (in descending order)  
+1. Open the web interface.  
+2. Enter the **drug name** or **SMILES structure** in the input field.  
+3. Select the **number of side effects** to view (e.g., Top 3, Top 5, Top 10).  
+4. Click **Predict**.  
+5. The system displays results in an organized list format, each containing:  
+   - Side effect name  
+   - Probability percentage  
+   - Defined threshold value  
+   - Severity level (e.g., *Low*, *Medium*, *High*)  
+   - Horizontal probability bar showing confidence visually  
 
----
-
-## 📊 Expected Output Example  
+Example (textual format):  
 ```
-Input Drug: Tamoxifen
-Top 5 Predicted Side Effects:
-1. Drowsiness (0.89)
-2. Headache (0.86)
-3. Vision Blurred (0.80)
-4. Tachycardia (0.73)
-5. Dizziness (0.70)
+1. Rash — Probability: 66.07% | Threshold: 15% | Severity: Medium  
+2. Dermatitis — Probability: 63.57% | Threshold: 15% | Severity: Medium  
+3. Nausea — Probability: 63.20% | Threshold: 15% | Severity: Medium  
 ```
 
 ---
 
 ## 🌍 Future Scope  
-- Integration with **human gene data** to study personalized side effect predictions.  
-- Enhanced molecular feature extraction using **Graph Neural Networks (GNNs)**.  
-- Deployment on **web and cloud platforms** for real-time access.  
-- Expansion to include **drug-drug interaction** effects.
+- Integration with **human gene data** for personalized side effect analysis.  
+- Use of **Graph Neural Networks (GNNs)** for improved molecular representation.  
+- Deployment to **web/cloud platforms** for wider accessibility.  
+- Support for **drug-drug interaction** prediction.
 
 ---
 
 ## ⚠️ Disclaimer  
 This project is developed for **academic and research purposes only**.  
-It is **not a medical diagnostic system** and should not replace professional medical advice.  
+It is **not a medical diagnostic tool** and should not replace professional medical advice.  
