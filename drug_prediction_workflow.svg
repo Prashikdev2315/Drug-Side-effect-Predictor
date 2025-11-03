@@ -1,0 +1,215 @@
+<svg viewBox="0 0 1200 1400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #1a1a1a; }
+      .section-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #2c5aa0; }
+      .label { font-family: Arial, sans-serif; font-size: 13px; fill: #333; }
+      .small-label { font-family: Arial, sans-serif; font-size: 11px; fill: #555; }
+      .file-box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .script-box { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .output-box { fill: #e8f5e9; stroke: #388e3c; stroke-width: 2; }
+      .model-box { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .ui-box { fill: #fce4ec; stroke: #c2185b; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-label { font-family: Arial, sans-serif; font-size: 10px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" class="title">DrugSideEffectPrediction Pipeline</text>
+  
+  <!-- Section 1: Data Input -->
+  <text x="50" y="70" class="section-title">1. Raw Data Sources</text>
+  
+  <!-- Drug Names Input -->
+  <rect x="50" y="80" width="200" height="60" rx="5" class="file-box"/>
+  <text x="150" y="105" text-anchor="middle" class="label" font-weight="bold">drug_names.csv</text>
+  <text x="150" y="125" text-anchor="middle" class="small-label">Drug names list</text>
+  
+  <!-- Side Effect Dataset Input -->
+  <rect x="300" y="80" width="250" height="60" rx="5" class="file-box"/>
+  <text x="425" y="100" text-anchor="middle" class="label" font-weight="bold">final_multilabel_</text>
+  <text x="425" y="115" text-anchor="middle" class="label" font-weight="bold">ADR_dataset.csv</text>
+  <text x="425" y="133" text-anchor="middle" class="small-label">Side-effect labels</text>
+  
+  <!-- FreqDB Input -->
+  <rect x="600" y="80" width="180" height="60" rx="5" class="file-box"/>
+  <text x="690" y="105" text-anchor="middle" class="label" font-weight="bold">freqDb.csv</text>
+  <text x="690" y="125" text-anchor="middle" class="small-label">Outlier flags</text>
+  
+  <!-- Section 2: SMILES Processing -->
+  <text x="50" y="190" class="section-title">2. SMILES Retrieval Pipeline</text>
+  
+  <!-- Arrow from drug_names to smiles_from_chembl -->
+  <path d="M 150 140 L 150 210" class="arrow"/>
+  
+  <!-- Script: smiles_from_chembl.py -->
+  <rect x="50" y="210" width="200" height="70" rx="5" class="script-box"/>
+  <text x="150" y="235" text-anchor="middle" class="label" font-weight="bold">smiles_from_chembl.py</text>
+  <text x="150" y="255" text-anchor="middle" class="small-label">Fetch SMILES from</text>
+  <text x="150" y="270" text-anchor="middle" class="small-label">ChEMBL API</text>
+  
+  <!-- Arrow to drug_smiles.csv -->
+  <path d="M 150 280 L 150 310" class="arrow"/>
+  
+  <!-- Output: drug_smiles.csv -->
+  <rect x="50" y="310" width="200" height="60" rx="5" class="output-box"/>
+  <text x="150" y="335" text-anchor="middle" class="label" font-weight="bold">drug_smiles.csv</text>
+  <text x="150" y="355" text-anchor="middle" class="small-label">Partial SMILES data</text>
+  
+  <!-- Arrow to pubchem script -->
+  <path d="M 150 370 L 150 400" class="arrow"/>
+  
+  <!-- Script: pubchem_for_missing.py -->
+  <rect x="50" y="400" width="200" height="70" rx="5" class="script-box"/>
+  <text x="150" y="425" text-anchor="middle" class="label" font-weight="bold">pubchem_for_missing.py</text>
+  <text x="150" y="445" text-anchor="middle" class="small-label">Backfill from</text>
+  <text x="150" y="460" text-anchor="middle" class="small-label">PubChem API</text>
+  
+  <!-- Arrow to completed SMILES -->
+  <path d="M 150 470 L 150 500" class="arrow"/>
+  
+  <!-- Output: drug_smiles_completed.csv -->
+  <rect x="50" y="500" width="200" height="60" rx="5" class="output-box"/>
+  <text x="150" y="520" text-anchor="middle" class="label" font-weight="bold">drug_smiles_</text>
+  <text x="150" y="535" text-anchor="middle" class="label" font-weight="bold">completed.csv</text>
+  <text x="150" y="553" text-anchor="middle" class="small-label">Complete SMILES</text>
+  
+  <!-- Section 3: Outlier Removal -->
+  <text x="300" y="190" class="section-title">3. Data Cleaning</text>
+  
+  <!-- Arrows from ADR dataset and freqDb to Outliers_removal -->
+  <path d="M 425 140 L 425 210" class="arrow"/>
+  <path d="M 690 140 L 690 180 L 530 180 L 530 210" class="arrow"/>
+  
+  <!-- Script: Outliers_removal.py -->
+  <rect x="300" y="210" width="230" height="70" rx="5" class="script-box"/>
+  <text x="415" y="235" text-anchor="middle" class="label" font-weight="bold">Outliers_removal.py</text>
+  <text x="415" y="255" text-anchor="middle" class="small-label">Remove flagged</text>
+  <text x="415" y="270" text-anchor="middle" class="small-label">side-effect entries</text>
+  
+  <!-- Arrow to updated dataset -->
+  <path d="M 415 280 L 415 310" class="arrow"/>
+  
+  <!-- Output: updated dataset -->
+  <rect x="290" y="310" width="250" height="60" rx="5" class="output-box"/>
+  <text x="415" y="330" text-anchor="middle" class="label" font-weight="bold">final_multilabel_ADR_</text>
+  <text x="415" y="345" text-anchor="middle" class="label" font-weight="bold">dataset_updated.csv</text>
+  <text x="415" y="363" text-anchor="middle" class="small-label">Cleaned labels</text>
+  
+  <!-- Section 4: Feature & Label Matrices -->
+  <text x="600" y="430" class="section-title">4. Model Training Data</text>
+  
+  <!-- Combined arrow from SMILES and cleaned dataset -->
+  <path d="M 250 530 L 750 530 L 750 470" class="arrow"/>
+  <path d="M 415 370 L 415 390 L 750 390 L 750 470" class="arrow"/>
+  
+  <!-- Feature matrices -->
+  <rect x="600" y="470" width="150" height="50" rx="5" class="file-box"/>
+  <text x="675" y="490" text-anchor="middle" class="label" font-weight="bold">X_ecfp.npy</text>
+  <text x="675" y="510" text-anchor="middle" class="small-label">ECFP features</text>
+  
+  <rect x="780" y="470" width="150" height="50" rx="5" class="file-box"/>
+  <text x="855" y="490" text-anchor="middle" class="label" font-weight="bold">y_labels.npy</text>
+  <text x="855" y="510" text-anchor="middle" class="small-label">Multi-label ADR</text>
+  
+  <!-- Section 5: Model Training -->
+  <text x="600" y="560" class="section-title">5. Model Training</text>
+  
+  <!-- Arrows to training -->
+  <path d="M 675 520 L 675 580" class="arrow"/>
+  <path d="M 855 520 L 855 560 L 785 560 L 785 580" class="arrow"/>
+  
+  <!-- Training scripts -->
+  <rect x="600" y="580" width="250" height="70" rx="5" class="script-box"/>
+  <text x="725" y="605" text-anchor="middle" class="label" font-weight="bold">model.py / run.py</text>
+  <text x="725" y="625" text-anchor="middle" class="small-label">Neural network training</text>
+  <text x="725" y="640" text-anchor="middle" class="small-label">with hyperparameters</text>
+  
+  <!-- Arrow to checkpoints -->
+  <path d="M 725 650 L 725 690" class="arrow"/>
+  
+  <!-- Checkpoints directory -->
+  <rect x="580" y="690" width="290" height="120" rx="5" class="model-box"/>
+  <text x="725" y="710" text-anchor="middle" class="label" font-weight="bold">checkpoints/</text>
+  <text x="725" y="730" text-anchor="middle" class="small-label">• final_model.pt</text>
+  <text x="725" y="750" text-anchor="middle" class="small-label">• best_model.pt</text>
+  <text x="725" y="770" text-anchor="middle" class="small-label">• inference_bundle.joblib</text>
+  <text x="725" y="790" text-anchor="middle" class="small-label">• label_names.json</text>
+  <text x="725" y="805" text-anchor="middle" class="small-label">• thresholds.npy</text>
+  
+  <!-- Section 6: Prediction & Metrics -->
+  <text x="50" y="680" class="section-title">6. Inference and Evaluation</text>
+  
+  <!-- Arrow from checkpoints to predict -->
+  <path d="M 580 750 L 330 750" class="arrow"/>
+  
+  <!-- Predict script -->
+  <rect x="50" y="720" width="280" height="60" rx="5" class="script-box"/>
+  <text x="190" y="745" text-anchor="middle" class="label" font-weight="bold">predict.py</text>
+  <text x="190" y="765" text-anchor="middle" class="small-label">Load bundle and make predictions</text>
+  
+  <!-- Arrow to metrics -->
+  <path d="M 190 780 L 190 850" class="arrow"/>
+  
+  <!-- Metrics script -->
+  <rect x="50" y="850" width="280" height="70" rx="5" class="script-box"/>
+  <text x="190" y="875" text-anchor="middle" class="label" font-weight="bold">generate_metrics.py</text>
+  <text x="190" y="895" text-anchor="middle" class="small-label">Calculate performance metrics</text>
+  <text x="190" y="910" text-anchor="middle" class="small-label">(precision, recall, F1, etc.)</text>
+  
+  <!-- Arrow to plots -->
+  <path d="M 190 920 L 190 960" class="arrow"/>
+  
+  <!-- Plots output -->
+  <rect x="50" y="960" width="280" height="80" rx="5" class="output-box"/>
+  <text x="190" y="975" text-anchor="middle" class="label" font-weight="bold">plots/</text>
+  <text x="190" y="995" text-anchor="middle" class="small-label">• detailed_metrics_table.csv</text>
+  <text x="190" y="1015" text-anchor="middle" class="small-label">• detailed_metrics.txt</text>
+  <text x="190" y="1030" text-anchor="middle" class="small-label">• test_metrics.json</text>
+  
+  <!-- Section 7: Web Application -->
+  <text x="50" y="1100" class="section-title">7. Web Application and UI</text>
+  
+  <!-- Arrows from checkpoints and predictions to app -->
+  <path d="M 580 770 L 500 770 L 500 1140 L 330 1140" class="arrow"/>
+  <path d="M 190 1040 L 190 1120" class="arrow"/>
+  
+  <!-- App script -->
+  <rect x="50" y="1120" width="280" height="60" rx="5" class="ui-box"/>
+  <text x="190" y="1145" text-anchor="middle" class="label" font-weight="bold">app.py</text>
+  <text x="190" y="1165" text-anchor="middle" class="small-label">Flask/Streamlit web interface</text>
+  
+  <!-- Arrow to UI -->
+  <path d="M 190 1180 L 190 1220" class="arrow"/>
+  
+  <!-- UI components -->
+  <rect x="50" y="1220" width="280" height="80" rx="5" class="ui-box"/>
+  <text x="190" y="1245" text-anchor="middle" class="label" font-weight="bold">Web Interface</text>
+  <text x="190" y="1265" text-anchor="middle" class="small-label">templates/ (HTML)</text>
+  <text x="190" y="1285" text-anchor="middle" class="small-label">static/ (CSS, JS, assets)</text>
+  
+  <!-- Legend -->
+  <text x="950" y="70" class="section-title">Legend</text>
+  
+  <rect x="900" y="80" width="100" height="40" rx="3" class="file-box"/>
+  <text x="950" y="105" text-anchor="middle" class="small-label">Input Data</text>
+  
+  <rect x="900" y="130" width="100" height="40" rx="3" class="script-box"/>
+  <text x="950" y="155" text-anchor="middle" class="small-label">Processing</text>
+  
+  <rect x="900" y="180" width="100" height="40" rx="3" class="output-box"/>
+  <text x="950" y="205" text-anchor="middle" class="small-label">Output Data</text>
+  
+  <rect x="900" y="230" width="100" height="40" rx="3" class="model-box"/>
+  <text x="950" y="255" text-anchor="middle" class="small-label">Model</text>
+  
+  <rect x="900" y="280" width="100" height="40" rx="3" class="ui-box"/>
+  <text x="950" y="305" text-anchor="middle" class="small-label">UI/App</text>
+  
+  <!-- Footer -->
+  <text x="600" y="1370" text-anchor="middle" class="small-label" fill="#999">Generated: 2025-10-30 | DrugSideEffectPrediction Pipeline</text>
+</svg>

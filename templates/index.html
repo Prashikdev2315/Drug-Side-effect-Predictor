@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Side Effect Predictor - AI-Powered Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-pills"></i>
+                    <h1>DrugSafe AI</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#predictor" class="nav-link active">Predictor</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#stats" class="nav-link">Statistics</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">AI-Powered Drug Side Effect Prediction</h2>
+                <p class="hero-subtitle">
+                    Predict potential side effects of pharmaceutical compounds using advanced machine learning.
+                    Simply enter a SMILES string to analyze molecular structure and predict adverse reactions.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-brain"></i>
+                        <div class="stat-info">
+                            <h3 id="totalSideEffects">299</h3>
+                            <p>Side Effects</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="stat-info">
+                            <h3 id="modelAccuracy">40.5%</h3>
+                            <p>F1 Score</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="stat-info">
+                            <h3 id="modelRecall">79.4%</h3>
+                            <p>Recall</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Predictor Section -->
+    <section id="predictor" class="predictor-section">
+        <div class="container">
+            <div class="predictor-grid">
+                <!-- Input Panel -->
+                <div class="input-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-flask"></i> Input Compound</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="smilesInput">
+                                <i class="fas fa-atom"></i> Drug Name or SMILES String
+                                <span class="tooltip" data-tooltip="Enter a drug name (e.g., Aspirin) or SMILES notation">
+                                    <i class="fas fa-info-circle"></i>
+                                </span>
+                            </label>
+                            <textarea 
+                                id="smilesInput" 
+                                class="smiles-input" 
+                                placeholder="Enter drug name (e.g., Aspirin, Ibuprofen) or SMILES string (e.g., CC(=O)OC1=CC=CC=C1C(=O)O)"
+                                rows="3"
+                            ></textarea>
+                            <small class="input-hint">
+                                <i class="fas fa-lightbulb"></i> 
+                                You can enter either a drug name or a SMILES notation. We'll automatically detect the format!
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="topKSelect">
+                                <i class="fas fa-list-ol"></i> Number of Predictions
+                            </label>
+                            <select id="topKSelect" class="form-select">
+                                <option value="5">Top 5</option>
+                                <option value="10" selected>Top 10</option>
+                                <option value="15">Top 15</option>
+                                <option value="20">Top 20</option>
+                                <option value="50">Top 50</option>
+                            </select>
+                        </div>
+
+                        <button id="predictBtn" class="btn btn-primary">
+                            <i class="fas fa-magic"></i>
+                            Predict Side Effects
+                        </button>
+
+                        <div class="examples-section">
+                            <p class="examples-title">
+                                <i class="fas fa-lightbulb"></i> Try these examples:
+                            </p>
+                            <div id="examplesList" class="examples-grid">
+                                <!-- Examples will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="results-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-chart-bar"></i> Prediction Results</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                            <div class="spinner"></div>
+                            <p>Analyzing molecular structure...</p>
+                        </div>
+
+                        <div id="resultsContainer" class="results-container">
+                            <div class="empty-state">
+                                <i class="fas fa-flask-vial"></i>
+                                <h4>Ready to Predict</h4>
+                                <p>Enter a drug name or SMILES string above, or select an example to begin analysis</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>About This Tool</h2>
+                <p>Advanced machine learning for pharmaceutical safety</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Deep Learning Model</h3>
+                    <p>Multi-label neural network trained on extensive drug-side effect data with 2248 molecular features (ECFP + RDKit descriptors)</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h3>High Recall (79.4%)</h3>
+                    <p>Optimized to detect most actual side effects, prioritizing patient safety over false positives</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Threshold Tuning</h3>
+                    <p>Per-class optimized decision thresholds for balanced precision-recall performance across 299 side effects</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>299 Side Effects</h3>
+                    <p>Comprehensive coverage of adverse drug reactions from common (nausea, headache) to rare conditions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="stats" class="stats-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Model Performance</h2>
+                <p>Real-time metrics from the trained model</p>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon blue">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h4>Micro F1 Score</h4>
+                        <p class="metric-value" id="microF1">0.4053</p>
+                        <p class="metric-desc">Overall prediction accuracy</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon green">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h4>Precision</h4>
+                        <p class="metric-value" id="precision">0.2721</p>
+                        <p class="metric-desc">Accuracy of positive predictions</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon orange">
+                        <i class="fas fa-check-double"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h4>Recall</h4>
+                        <p class="metric-value" id="recall">0.7937</p>
+                        <p class="metric-desc">Coverage of actual positives</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon purple">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="metric-content">
+                        <h4>Macro F1 Score</h4>
+                        <p class="metric-value" id="macroF1">0.3288</p>
+                        <p class="metric-desc">Average per-class performance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3><i class="fas fa-pills"></i> DrugSafe AI</h3>
+                    <p>AI-powered drug side effect prediction system</p>
+                    <p class="copyright">© 2025 Drug Side Effect Predictor. For research purposes only.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Disclaimer</h4>
+                    <p>This tool is for research and educational purposes only. Always consult healthcare professionals for medical advice.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
